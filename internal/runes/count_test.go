@@ -7,7 +7,7 @@ func TestEmptyCounts(t *testing.T) {
 
 	tables := []struct {
 		r rune
-		n int
+		n uint
 	}{
 		{'a', 0},
 		{'一', 0},
@@ -34,7 +34,7 @@ func TestASCIINotCounted(t *testing.T) {
 
 	tables := []struct {
 		r rune
-		n int
+		n uint
 	}{
 		{'G', 0},
 		{'o', 0},
@@ -62,7 +62,7 @@ func TestSingleIncrement(t *testing.T) {
 
 	tables := []struct {
 		r rune
-		n int
+		n uint
 	}{
 		{'一', 1},
 		{'个', 1},
@@ -93,7 +93,7 @@ func TestMultiIncrement(t *testing.T) {
 
 	tables := []struct {
 		r rune
-		n int
+		n uint
 	}{
 		{'你', 1},
 		{'可', 1},
@@ -143,7 +143,7 @@ func TestMerge(t *testing.T) {
 
 	tables := []struct {
 		r rune
-		n int
+		n uint
 	}{
 		{'你', 1},
 		{'可', 1},
@@ -177,7 +177,7 @@ func TestMerge(t *testing.T) {
 	// c2 is unchanged
 	tables = []struct {
 		r rune
-		n int
+		n uint
 	}{
 		{'点', 1},
 		{'击', 1},

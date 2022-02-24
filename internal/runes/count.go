@@ -9,14 +9,14 @@ const (
 )
 
 type Count struct {
-	array [total]int
+	array [total]uint
 }
 
 func NewCount() *Count {
 	return &Count{}
 }
 
-func (c *Count) Of(r rune) int {
+func (c *Count) Of(r rune) uint {
 	i := index(r)
 	if i < 0 || i >= total {
 		return 0
@@ -40,6 +40,6 @@ func (c *Count) MergeWith(other *Count) {
 	}
 }
 
-func index(r rune) int {
-	return int(r) - Min
+func index(r rune) uint {
+	return uint(r) - Min
 }

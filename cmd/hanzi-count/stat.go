@@ -10,7 +10,7 @@ import (
 
 type stat struct {
 	ch    rune
-	count int
+	count uint
 }
 
 func computeStats(counts *runes.Count) []stat {
@@ -40,7 +40,7 @@ func printStats(stats []stat) {
 	for _, stat := range stats {
 		w.Write([]byte(string(stat.ch)))
 		w.Write([]byte(" "))
-		w.Write([]byte(strconv.Itoa(stat.count)))
+		w.Write([]byte(strconv.FormatUint(uint64(stat.count), 10)))
 		w.Write([]byte("\n"))
 	}
 }
