@@ -4,9 +4,12 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/rsookram/hanzi-count/internal/runes"
 )
 
 func main() {
+	excludes := flag.String("excludes", "", "File containing characters to exclude from the output")
 	flag.Parse()
 
 	fileNames := flag.Args()
@@ -18,7 +21,14 @@ func main() {
 
 	counts := countCharacters(fileNames)
 
-	stats := computeStats(counts)
+	var excludedCounts *runes.Count
+	if *excludes != "" {
+		excludedCounts = countCharacters([]string{*excludes})
+	} else {
+		excludedCounts = runes.NewCount()
+	}
+
+	stats := computeStats(counts, excludedCounts)
 
 	printStats(stats)
 }

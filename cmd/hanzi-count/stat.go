@@ -13,12 +13,16 @@ type stat struct {
 	count uint
 }
 
-func computeStats(counts *runes.Count) []stat {
+func computeStats(counts, excluded *runes.Count) []stat {
 	stats := make([]stat, 0)
 
 	for r := runes.Min; r <= runes.MaxInclusive; r++ {
 		count := counts.Of(r)
 		if count == 0 {
+			continue
+		}
+
+		if excluded.Of(r) > 0 {
 			continue
 		}
 
