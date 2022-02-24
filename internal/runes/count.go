@@ -8,12 +8,6 @@ const (
 	total = Max - Min + 1
 )
 
-type Counter interface {
-	Of(r rune) int
-	Increment(r rune)
-	MergeWith(other Counter)
-}
-
 type Count struct {
 	array [total]int
 }
@@ -40,9 +34,9 @@ func (c *Count) Increment(r rune) {
 	c.array[i]++
 }
 
-func (c *Count) MergeWith(other Counter) {
-	for r := Min; r <= Max; r++ {
-		c.array[index(r)] += other.Of(r)
+func (c *Count) MergeWith(other *Count) {
+	for i := 0; i < total; i++ {
+		c.array[i] += other.array[i]
 	}
 }
 

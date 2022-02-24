@@ -1,13 +1,15 @@
 package main
 
 import (
-	"io/ioutil"
+	"bufio"
+	"io"
+	"os"
 	"sync"
 
 	"github.com/rsookram/hanzi-count/internal/runes"
 )
 
-func countCharacters(paths []string) runes.Counter {
+func countCharacters(paths []string) *runes.Count {
 	in := gen(paths)
 
 	out := merge(
@@ -36,19 +38,15 @@ func gen(paths []string) <-chan string {
 	return out
 }
 
-func countWorker(in <-chan string) <-chan runes.Counter {
-	out := make(chan runes.Counter)
+func countWorker(in <-chan string) <-chan *runes.Count {
+	out := make(chan *runes.Count)
 
 	go func() {
 		counts := runes.NewCount()
 		for path := range in {
-			data, err := ioutil.ReadFile(path)
+			err := count(counts, path)
 			if err != nil {
 				continue
-			}
-
-			for _, r := range string(data) {
-				counts.Increment(r)
 			}
 		}
 		out <- counts
@@ -59,11 +57,35 @@ func countWorker(in <-chan string) <-chan runes.Counter {
 	return out
 }
 
-func merge(cs ...<-chan runes.Counter) <-chan runes.Counter {
-	var wg sync.WaitGroup
-	out := make(chan runes.Counter)
+func count(c *runes.Count, path string) error {
+	f, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
 
-	output := func(c <-chan runes.Counter) {
+	reader := bufio.NewReader(f)
+
+	for {
+		if r, _, err := reader.ReadRune(); err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				return err
+			}
+		} else {
+			c.Increment(r)
+		}
+	}
+
+	return nil
+}
+
+func merge(cs ...<-chan *runes.Count) <-chan *runes.Count {
+	var wg sync.WaitGroup
+	out := make(chan *runes.Count)
+
+	output := func(c <-chan *runes.Count) {
 		for n := range c {
 			out <- n
 		}

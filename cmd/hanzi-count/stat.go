@@ -1,7 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"bufio"
+	"os"
+	"strconv"
 
 	"github.com/rsookram/hanzi-count/internal/runes"
 )
@@ -11,7 +13,7 @@ type stat struct {
 	count int
 }
 
-func computeStats(counts runes.Counter) []stat {
+func computeStats(counts *runes.Count) []stat {
 	stats := make([]stat, 0)
 
 	for r := runes.Min; r <= runes.Max; r++ {
@@ -32,7 +34,13 @@ func computeStats(counts runes.Counter) []stat {
 }
 
 func printStats(stats []stat) {
+	w := bufio.NewWriter(os.Stdout)
+	defer w.Flush()
+
 	for _, stat := range stats {
-		fmt.Println(string(stat.ch), stat.count)
+		w.Write([]byte(string(stat.ch)))
+		w.Write([]byte(" "))
+		w.Write([]byte(strconv.Itoa(stat.count)))
+		w.Write([]byte("\n"))
 	}
 }
