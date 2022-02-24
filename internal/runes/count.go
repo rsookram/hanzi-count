@@ -1,11 +1,11 @@
 package runes
 
 const (
-	// Min and Max form the range for reasonably common Chinese characters
-	Min = '一'
-	Max = '龥'
+	// Min and MaxInclusive form the range for reasonably common Chinese characters
+	Min          = '一'
+	MaxInclusive = '龥'
 
-	total = Max - Min + 1
+	total = MaxInclusive - Min + 1
 )
 
 type Count struct {

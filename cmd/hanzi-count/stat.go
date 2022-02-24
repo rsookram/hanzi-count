@@ -16,7 +16,7 @@ type stat struct {
 func computeStats(counts *runes.Count) []stat {
 	stats := make([]stat, 0)
 
-	for r := runes.Min; r <= runes.Max; r++ {
+	for r := runes.Min; r <= runes.MaxInclusive; r++ {
 		count := counts.Of(r)
 		if count == 0 {
 			continue
