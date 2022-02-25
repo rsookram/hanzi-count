@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"os"
+	"io"
 	"strconv"
 
 	"github.com/rsookram/hanzi-count/internal/runes"
@@ -37,14 +37,27 @@ func computeStats(counts, excluded *runes.Count) []stat {
 	return stats
 }
 
-func printStats(stats []stat) {
-	w := bufio.NewWriter(os.Stdout)
-	defer w.Flush()
+func printStats(w io.Writer, stats []stat) error {
+	buf := bufio.NewWriter(w)
+	defer buf.Flush()
 
 	for _, stat := range stats {
-		w.Write([]byte(string(stat.ch)))
-		w.Write([]byte(" "))
-		w.Write([]byte(strconv.FormatUint(uint64(stat.count), 10)))
-		w.Write([]byte("\n"))
+		if _, err := io.WriteString(buf, string(stat.ch)); err != nil {
+			return err
+		}
+
+		if _, err := io.WriteString(buf, " "); err != nil {
+			return err
+		}
+
+		if _, err := io.WriteString(buf, strconv.FormatUint(uint64(stat.count), 10)); err != nil {
+			return err
+		}
+
+		if _, err := io.WriteString(buf, "\n"); err != nil {
+			return err
+		}
 	}
+
+	return nil
 }

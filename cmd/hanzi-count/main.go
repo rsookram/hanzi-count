@@ -30,5 +30,9 @@ func main() {
 
 	stats := computeStats(counts, excludedCounts)
 
-	printStats(stats)
+	err := printStats(os.Stdout, stats)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 }

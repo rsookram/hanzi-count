@@ -1,5 +1,10 @@
 package runes
 
+import (
+	"errors"
+	"math"
+)
+
 const (
 	// Min and MaxInclusive form the range for reasonably common Chinese characters
 	Min          = '一'
@@ -7,6 +12,8 @@ const (
 
 	total = MaxInclusive - Min + 1
 )
+
+var errOutOfBounds = errors.New("out of bounds")
 
 type Count struct {
 	array [total]uint
@@ -17,8 +24,8 @@ func NewCount() *Count {
 }
 
 func (c *Count) Of(r rune) uint {
-	i := index(r)
-	if i < 0 || i >= total {
+	i, err := index(r)
+	if err != nil {
 		return 0
 	}
 
@@ -26,8 +33,8 @@ func (c *Count) Of(r rune) uint {
 }
 
 func (c *Count) Increment(r rune) {
-	i := index(r)
-	if i < 0 || i >= total {
+	i, err := index(r)
+	if err != nil {
 		return
 	}
 
@@ -35,11 +42,15 @@ func (c *Count) Increment(r rune) {
 }
 
 func (c *Count) MergeWith(other *Count) {
-	for i := 0; i < total; i++ {
-		c.array[i] += other.array[i]
+	for i, cnt := range other.array {
+		c.array[i] += cnt
 	}
 }
 
-func index(r rune) uint {
-	return uint(r) - Min
+func index(r rune) (uint, error) {
+	if r < Min || r > MaxInclusive {
+		return math.MaxUint, errOutOfBounds
+	}
+
+	return uint(r) - Min, nil
 }
