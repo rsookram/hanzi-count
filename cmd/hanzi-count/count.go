@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"io"
 	"os"
+	"runtime"
 	"sync"
 
 	"github.com/rsookram/hanzi-count/internal/runes"
@@ -12,12 +13,12 @@ import (
 func countCharacters(paths []string) *runes.Count {
 	in := gen(paths)
 
-	out := merge(
-		countWorker(in),
-		countWorker(in),
-		countWorker(in),
-		countWorker(in),
-	)
+	ws := make([]<-chan *runes.Count, 0, runtime.NumCPU())
+	for i := 0; i < cap(ws); i++ {
+		ws = append(ws, countWorker(in))
+	}
+
+	out := merge(ws...)
 
 	total := runes.NewCount()
 	for cs := range out {
