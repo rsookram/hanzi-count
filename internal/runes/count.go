@@ -32,6 +32,7 @@ func (c *Count) Of(r rune) uint {
 	return c.array[i]
 }
 
+// Increment increments the count for the given rune by one.
 func (c *Count) Increment(r rune) {
 	i, err := index(r)
 	if err != nil {

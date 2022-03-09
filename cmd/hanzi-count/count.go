@@ -10,6 +10,7 @@ import (
 	"github.com/rsookram/hanzi-count/internal/runes"
 )
 
+// countCharacters counts the Chinese runes in the files at the given paths.
 func countCharacters(paths []string) *runes.Count {
 	in := gen(paths)
 
@@ -28,6 +29,7 @@ func countCharacters(paths []string) *runes.Count {
 	return total
 }
 
+// gen returns a channel which emits the given paths.
 func gen(paths []string) <-chan string {
 	out := make(chan string, len(paths))
 
@@ -39,6 +41,8 @@ func gen(paths []string) <-chan string {
 	return out
 }
 
+// countWorker reads filepaths off the given channel, and emits its results
+// (counts) on the returned channel.
 func countWorker(in <-chan string) <-chan *runes.Count {
 	out := make(chan *runes.Count)
 
@@ -58,6 +62,8 @@ func countWorker(in <-chan string) <-chan *runes.Count {
 	return out
 }
 
+// count computes the frequencies of each Chinese rune in the file with the
+// given path.
 func count(c *runes.Count, path string) error {
 	f, err := os.Open(path)
 	if err != nil {
@@ -82,6 +88,8 @@ func count(c *runes.Count, path string) error {
 	return nil
 }
 
+// merge reads results off the given channels, and emits all of them through
+// the single returned channel.
 func merge(cs ...<-chan *runes.Count) <-chan *runes.Count {
 	var wg sync.WaitGroup
 	out := make(chan *runes.Count)

@@ -5,11 +5,13 @@ files.
 
 \* Only a common subset of the CJK Unified Ideographs unicode block is counted
 for simplicity and performance reasons. This includes simplified and
-traditional characters, as well as Kanji. Some less common characters may be
+traditional characters, as well as Kanji. Some less common characters are
 excluded.
 
 
 ## Example
+
+The basic usage of `hanzi-count` looks like:
 
 ```shell
 > cat file.txt
@@ -36,6 +38,20 @@ excluded.
 里 2
 ```
 
+Use `sort` to sort the output by frequency. The following command sorts by
+frequency descending:
+
+```shell
+hanzi-count file.txt | sort -nrk 2
+```
+
+If you use an SRS to keep track of characters you know, you can query it to get
+characters to exclude from the output. For example:
+
+```shell
+hanzi-count --excludes <(sqlite3 srs.db 'SELECT front FROM Card WHERE deckId = 1') file.txt
+```
+
 
 ## Usage
 
@@ -48,7 +64,7 @@ FLAGS:
     -excludes, --excludes    File containing characters to exclude from the output
 
 ARGS:
-    <FILE>...    Path of the files containing characters to count
+    <FILE>...    Paths of the files containing characters to count
 ```
 
 ## Install
