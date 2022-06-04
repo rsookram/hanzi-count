@@ -18,32 +18,27 @@ The basic usage of `hanzi-count` looks like:
 你可以编辑这里的代码！
 点击这里然后开始输入。
 > hanzi-count file.txt
-代 1
-以 1
-你 1
+里 2
+这 2
+点 1
 入 1
 击 1
 可 1
 后 1
 始 1
 开 1
-点 1
+你 1
 然 1
 的 1
 码 1
 编 1
 辑 1
 输 1
-这 2
-里 2
+以 1
+代 1
 ```
 
-Use `sort` to sort the output by frequency. The following command sorts by
-frequency descending:
-
-```shell
-hanzi-count file.txt | sort -nrk 2
-```
+The output is sorted by frequency descending.
 
 If you use an SRS to keep track of characters you know, you can query it to get
 characters to exclude from the output. For example:

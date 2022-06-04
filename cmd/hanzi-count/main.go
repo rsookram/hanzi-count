@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"sort"
 
 	"github.com/rsookram/hanzi-count/internal/runes"
 )
@@ -29,6 +30,9 @@ func main() {
 	}
 
 	stats := computeStats(counts, excludedCounts)
+	sort.Slice(stats, func(lhs, rhs int) bool {
+		return stats[lhs].count > stats[rhs].count
+	})
 
 	err := printStats(os.Stdout, stats)
 	if err != nil {
