@@ -6,9 +6,11 @@ import (
 )
 
 const (
-	// Min and MaxInclusive form the range for reasonably common Chinese characters
-	Min          = '一'
-	MaxInclusive = '龥'
+	// Min is the first character in the CJK Unified Ideographs Unicode block.
+	Min = '一'
+	// MaxInclusive is the last character in the CJK Unified Ideographs Unicode
+	// block.
+	MaxInclusive = '\u9fff'
 
 	total = MaxInclusive - Min + 1
 )

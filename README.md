@@ -3,10 +3,10 @@
 Command-line tool which lists the frequency of Chinese characters\* within text
 files.
 
-\* Only a common subset of the CJK Unified Ideographs unicode block is counted
-for simplicity and performance reasons. This includes simplified and
-traditional characters, as well as Kanji. Some less common characters are
-excluded.
+\* More specifically, the characters in the
+[CJK Unified Ideographs](https://en.wikipedia.org/wiki/CJK_Unified_Ideographs_(Unicode_block))
+Unicode block are counted. This includes simplified and traditional characters,
+as well as Kanji. Some less common characters are excluded.
 
 
 ## Example
