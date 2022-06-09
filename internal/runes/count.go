@@ -1,3 +1,6 @@
+// Package runes implements a counter for runes in the CJK Unified Ideographs
+// Unicode block. It provides efficient read, increment, and merge operations
+// at the expense of higher memory usage.
 package runes
 
 import (
@@ -17,14 +20,18 @@ const (
 
 var errOutOfBounds = errors.New("out of bounds")
 
+// Count maintains counts of runes in the range specified by Min and
+// MaxInclusive.
 type Count struct {
 	array [total]uint
 }
 
+// NewCount returns a new Count with the counts of all runes set to 0.
 func NewCount() *Count {
 	return &Count{}
 }
 
+// Of returns the count of the given rune.
 func (c *Count) Of(r rune) uint {
 	i, err := index(r)
 	if err != nil {
@@ -44,6 +51,7 @@ func (c *Count) Increment(r rune) {
 	c.array[i]++
 }
 
+// MergeWith adds the counts from the given Count to this Count.
 func (c *Count) MergeWith(other *Count) {
 	for i, cnt := range other.array {
 		c.array[i] += cnt
