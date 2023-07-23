@@ -1,3 +1,3 @@
 module github.com/rsookram/hanzi-count
 
-go 1.17
+go 1.20
